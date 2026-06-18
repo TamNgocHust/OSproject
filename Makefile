@@ -68,7 +68,7 @@ $(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).elf
 	@echo "========================================================="
 
 $(BUILD_DIR):
-	mkdir $@
+	mkdir -p $@ 
 
 clean:
 	rm -rf $(BUILD_DIR)
