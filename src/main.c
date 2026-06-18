@@ -1,39 +1,63 @@
 #include <stdint.h>
 #include "os_kernel.h"
 
-/* Khai báo các hàm ngoại vi tự viết từ stm32f100_uart.c */
+/* Các hàm UART tự viết */
 extern void UART_Init(void);
 extern void UART_Print(const char* str);
 extern void UART_PrintNum(uint32_t num);
 
 /* =========================================================================
- * KHAI BÁO TÀI NGUYÊN CHO CÁC TASK
+ * KHAI BÁO TÀI NGUYÊN
  * ========================================================================= */
-#define STACK_SIZE 256  /* Mỗi Task được cấp một mảng 256 biến 32-bit (1024 bytes) làm Stack */
+#define STACK_SIZE 256  
 
-/* Khai báo 2 khối TCB để quản lý 2 ứng dụng */
-TCB_t task1_tcb;
-TCB_t task2_tcb;
-
-/* Khai báo mảng RAM tĩnh làm Stack (Kiểm soát chặt chẽ, tuyệt đối không dùng malloc) */
+/* Chỉ cần cấp phát 2 mảng Stack tĩnh cho 2 Task */
 uint32_t task1_stack[STACK_SIZE];
 uint32_t task2_stack[STACK_SIZE];
 
+/* Khai báo Mutex toàn cục để bảo vệ cổng UART (Đồng bộ hóa) */
+os_mutex_t uart_mutex;
+
 /* =========================================================================
- * MÃ NGUỒN CỦA 2 ỨNG DỤNG (TASKS) CHẠY SONG SONG
+ * MÃ NGUỒN CỦA 2 ỨNG DỤNG (TÍCH HỢP MUTEX)
  * ========================================================================= */
 void Task1(void) {
     while (1) {
-        UART_Print("Xin chao tu TASK 1\n");
-        /* Trễ một chút để dễ nhìn trên QEMU */
-        for(volatile int i = 0; i < 300000; i++); 
+        /* Xin cấp quyền sử dụng Mutex trước khi dùng UART */
+        os_mutex_take(&uart_mutex);
+        
+        /* -------- VÙNG CRITICAL SECTION -------- */
+        UART_Print("Hello World!\n");
+        
+        /* Vòng lặp rỗng mô phỏng một tác vụ xử lý tốn thời gian.
+         * Nhờ có Mutex, Task 2 sẽ bị khóa (Blocked) và không thể xen ngang vào đây. */
+        for(volatile int i = 0; i < 10000; i++); 
+        /* --------------------------------------- */
+        
+        /* Xong việc, trả lại Mutex để Task khác có thể dùng */
+        os_mutex_give(&uart_mutex);
+        
+        /* Cho Task 1 ngủ 1000ms */
+        os_delay(1000); 
     }
 }
 
 void Task2(void) {
     while (1) {
-        UART_Print("Chao dong chi tu TASK 2\n");
-        for(volatile int i = 0; i < 300000; i++);
+        /* Chờ lấy bằng được chìa khóa Mutex mới chạy tiếp */
+        os_mutex_take(&uart_mutex);
+        
+        /* -------- VÙNG CRITICAL SECTION -------- */
+        UART_Print("Day la nhom 11\n");
+        
+        for(volatile int i = 0; i < 10000; i++); 
+        /* --------------------------------------- */
+        
+        /* Xong việc, nhả Mutex ra */
+        os_mutex_give(&uart_mutex);
+        
+        /* Task 2 ngủ 1500ms */
+        os_delay(1500); 
     }
 }
 
@@ -41,26 +65,28 @@ void Task2(void) {
  * HÀM MAIN - HẠT NHÂN KHỞI ĐỘNG
  * ========================================================================= */
 int main(void) {
-    /* 1. Khởi tạo UART */
     UART_Init();
-    UART_Print("Hardware OK. Tien hanh dong goi Stack cho cac Task...\n");
+    UART_Print("Hardware OK. Khoi tao kien truc RTOS cua Nhom 11...\n");
 
-    /* 2. Nhồi dữ liệu giả lập vào Stack và liên kết với TCB */
-    OS_TaskCreate(&task1_tcb, Task1, task1_stack, STACK_SIZE, 1);
-    OS_TaskCreate(&task2_tcb, Task2, task2_stack, STACK_SIZE, 2);
+    /* 1. Khởi tạo dữ liệu hệ điều hành */
+    os_init();
+    
+    /* 2. Khởi tạo Mutex bảo vệ UART */
+    os_mutex_init(&uart_mutex);
 
-    UART_Print("Khoi tao hoan tat! Trao quyen dieu khien cho RTOS...\n");
+    /* 3. Đăng ký Task vào hệ thống */
+    os_create_task(Task1, task1_stack, STACK_SIZE);
+    os_create_task(Task2, task2_stack, STACK_SIZE);
 
-    /* 3. Gọi hàm khởi động Hệ điều hành, nạp 2 Task vào bệ phóng.
-     * Hàm này sẽ tự bật SysTick và gọi ngắt hoán đổi PendSV.
-     */
-    OS_Start(&task1_tcb, &task2_tcb);
+    UART_Print("Bat dau chay Scheduler...\n");
 
-    /* 4. Vòng lặp rảnh rỗi (Idle Loop) của hệ điều hành.
-     * Khi OS đã chạy, CPU sẽ chỉ nhảy vào đây nếu không có Task nào cần chạy.
-     */
+    /* 4. Khởi động OS */
+    os_start();
+
+    /* 5. CPU sẽ chỉ lọt vào đây nếu tất cả các Task đều đang ngủ (IDLE) */
     while (1) {
-        // Nghỉ ngơi
+        /* Chờ ngắt (Đưa phần cứng vào chế độ tiết kiệm điện) */
+        __asm volatile("wfi"); 
     }
     
     return 0; 
