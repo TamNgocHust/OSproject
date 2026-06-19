@@ -29,6 +29,9 @@ void os_idle_task(void) {
  * 1. ĐIỀU KHIỂN VÒNG ĐỜI TASK
  * ========================================================================= */
 void os_init(void) {
+    /* Khởi tạo hệ thống quản lý bộ nhớ Buddy System trước tiên */
+    os_buddy_init();
+
     os_task_count = 0;
     os_current_task_idx = 0;
     for (int i = 0; i < OS_MAX_TASKS; i++) {
@@ -36,24 +39,25 @@ void os_init(void) {
         os_task_table[i].delay = 0;
     }
     
-    /* OS luôn tự động tạo Idle Task ở vị trí số 0 (Task mặc định) */
-    os_create_task(os_idle_task, os_idle_stack, 128);
+    /* OS luôn tự động tạo Idle Task ở vị trí số 0 với độ ưu tiên 0 (Thấp nhất) */
+    os_create_task(os_idle_task, os_idle_stack, 128, 0);
 }
 
-void os_create_task(void (*task_func)(void), uint32_t *stack, uint32_t stack_size) {
+/* ĐÃ CẬP NHẬT: Thêm tham số uint8_t priority vào hàm */
+void os_create_task(void (*task_func)(void), uint32_t *stack, uint32_t stack_size, uint8_t priority) {
     if (os_task_count >= OS_MAX_TASKS) return; 
 
     /* Lấy địa chỉ vùng nhớ đỉnh Stack ban đầu do người dùng cấp */
     uint32_t stack_top = (uint32_t)&stack[stack_size];
     
-    /* CẬP NHẬT TIÊU CHÍ 4: Ép đỉnh Ngăn xếp căn chỉnh 8-byte theo chuẩn ARM EABI AAPCS */
+    /* Ép đỉnh Ngăn xếp căn chỉnh 8-byte theo chuẩn ARM EABI AAPCS */
     uint32_t *sp = (uint32_t *)(stack_top & ~0x7UL);
 
     /* 1. Giả lập khung ngắt do PHẦN CỨNG tự động Push khi xảy ra ngắt (8 thanh ghi) */
     *(--sp) = 0x01000000;           /* xPSR: Bật bit T (Thumb mode) để tránh lỗi HardFault */
     *(--sp) = (uint32_t)task_func;  /* PC (Program Counter): Trỏ vào hàm thực thi của Task */
     
-    /* CẬP NHẬT TIÊU CHÍ 4: Gài hàm bẫy lỗi vào LR thay vì gán giá trị tĩnh rác 0xFFFFFFFD.
+    /* Gài hàm bẫy lỗi vào LR thay vì gán giá trị tĩnh rác 0xFFFFFFFD.
      * Nếu tác vụ chạy hết lệnh và return, CPU sẽ tự động nhảy vào hàm os_task_exit_handler */
     *(--sp) = (uint32_t)os_task_exit_handler; 
     
@@ -77,6 +81,9 @@ void os_create_task(void (*task_func)(void), uint32_t *stack, uint32_t stack_siz
     os_task_table[os_task_count].sp = sp;
     os_task_table[os_task_count].state = OS_TASK_READY;
     os_task_table[os_task_count].delay = 0;
+    
+    /* ĐÃ CẬP NHẬT: Ghi nhận mức độ ưu tiên của Task */
+    os_task_table[os_task_count].priority = priority; 
     
     os_task_count++;
 }
@@ -139,8 +146,9 @@ void SysTick_Handler(void) {
     os_tick_handler();
 }
 
+/* ĐÃ CẬP NHẬT: THUẬT TOÁN LẬP LỊCH DỰA TRÊN ĐỘ ƯU TIÊN */
 uint32_t *os_schedule(uint32_t *current_sp) {
-    /* Lưu đỉnh Stack của tác vụ cũ vừa bị ngắt */
+    /* 1. Lưu lại Stack của Task cũ */
     if (current_sp != NULL) {
         os_task_table[os_current_task_idx].sp = current_sp;
         if (os_task_table[os_current_task_idx].state == OS_TASK_RUNNING) {
@@ -148,16 +156,31 @@ uint32_t *os_schedule(uint32_t *current_sp) {
         }
     }
 
-    /* Thuật toán Lập lịch Vòng tròn (Round-Robin Scheduler)
-     * Quét tìm kiếm Tác vụ kế tiếp đang ở trạng thái READY */
-    for (uint32_t i = 1; i <= os_task_count; i++) {
-        uint32_t next_idx = (os_current_task_idx + i) % os_task_count;
-        if (os_task_table[next_idx].state == OS_TASK_READY) {
-            os_current_task_idx = next_idx;
-            break;
+    uint8_t max_priority = 0;
+    uint32_t next_task_idx = 0; /* Mặc định rơi vào Idle Task (idx = 0) */
+
+    /* 2. BƯỚC LỌC 1: Quét tìm mức Priority CAO NHẤT trong số các Task đang READY */
+    for (uint32_t i = 1; i < os_task_count; i++) {
+        if (os_task_table[i].state == OS_TASK_READY) {
+            if (os_task_table[i].priority > max_priority) {
+                max_priority = os_task_table[i].priority;
+            }
         }
     }
 
+    /* 3. BƯỚC LỌC 2: Chọn Task để chạy (Kế thừa Round-Robin cho các Task CÙNG MỨC ưu tiên) */
+    if (max_priority > 0) {
+        for (uint32_t i = 1; i <= os_task_count; i++) {
+            uint32_t idx = (os_current_task_idx + i) % os_task_count;
+            if (os_task_table[idx].state == OS_TASK_READY && os_task_table[idx].priority == max_priority) {
+                next_task_idx = idx;
+                break;
+            }
+        }
+    }
+
+    /* 4. Cấp quyền CPU */
+    os_current_task_idx = next_task_idx;
     os_task_table[os_current_task_idx].state = OS_TASK_RUNNING;
     return os_task_table[os_current_task_idx].sp;
 }
@@ -256,4 +279,139 @@ void os_task_exit_handler(void) {
     while (1) {
         os_yield(); 
     }
+}
+
+/* =========================================================================
+ * 6. QUẢN LÝ BỘ NHỚ BẰNG CÂY NHỊ PHÂN (BUDDY SYSTEM)
+ * ========================================================================= */
+
+/* Cấu trúc Header (Gắn ở đầu mỗi khối RAM được cấp phát)
+ * Kích thước struct này đúng bằng 8 Byte trên kiến trúc 32-bit (đã tính Padding) */
+typedef struct os_block {
+    uint8_t order;          /* Cấp độ của khối (ví dụ: 5 tức là 32 byte) */
+    uint8_t is_free;        /* 1: Đang rảnh, 0: Đã bị Task chiếm */
+    struct os_block *next;  /* Con trỏ nối danh sách liên kết */
+} os_block_t;
+
+/* Hồ chứa RAM 4KB (Ép căn chỉnh 8-byte theo chuẩn ARM Cortex-M3) */
+uint8_t os_heap[OS_POOL_SIZE] __attribute__((aligned(8)));
+
+/* Mảng chứa 8 danh sách liên kết tương ứng với 8 cấp độ kích thước từ 32B đến 4096B */
+os_block_t *free_lists[OS_NUM_ORDERS];
+
+void os_buddy_init(void) {
+    for (int i = 0; i < OS_NUM_ORDERS; i++) {
+        free_lists[i] = NULL;
+    }
+    
+    /* Ban đầu, nguyên khối 4KB là một khối duy nhất rảnh rỗi ở cấp lớn nhất */
+    os_block_t *first_block = (os_block_t *)os_heap;
+    first_block->order = OS_MAX_ORDER;
+    first_block->is_free = 1;
+    first_block->next = NULL;
+    
+    free_lists[OS_NUM_ORDERS - 1] = first_block;
+}
+
+void *os_malloc(uint32_t size) {
+    /* Tổng size = Dữ liệu người dùng + 8 Byte Header */
+    uint32_t total_size = size + sizeof(os_block_t);
+    uint8_t target_order = OS_MIN_ORDER;
+    
+    /* Tìm cấp độ (power of 2) nhỏ nhất vừa vặn với total_size */
+    while ((1UL << target_order) < total_size && target_order <= OS_MAX_ORDER) {
+        target_order++;
+    }
+    
+    if (target_order > OS_MAX_ORDER) return NULL; /* Tràn RAM */
+    
+    uint8_t target_idx = target_order - OS_MIN_ORDER;
+    
+    __asm volatile ("cpsid i"); /* Bắt đầu Vùng miền găng */
+    
+    /* Quét tìm một khối rảnh từ cấp độ target trở lên */
+    int i;
+    for (i = target_idx; i < OS_NUM_ORDERS; i++) {
+        if (free_lists[i] != NULL) break;
+    }
+    
+    if (i == OS_NUM_ORDERS) {
+        __asm volatile ("cpsie i");
+        return NULL; /* Không còn RAM trống nào đủ lớn */
+    }
+    
+    /* Bốc khối RAM đó ra khỏi danh sách rảnh */
+    os_block_t *block = free_lists[i];
+    free_lists[i] = block->next;
+    
+    /* Bước bẻ đôi (Split): Chặt khối lớn thành 2 nửa cho đến khi bằng target_order */
+    while (i > target_idx) {
+        i--;
+        uint32_t half_size = (1UL << (i + OS_MIN_ORDER));
+        
+        /* Tạo ra "người bạn" (Buddy) ở nửa sau của khối RAM */
+        os_block_t *buddy = (os_block_t *)((uint8_t *)block + half_size);
+        buddy->order = i + OS_MIN_ORDER;
+        buddy->is_free = 1;
+        
+        /* Cất Buddy vào danh sách rảnh ở cấp độ thấp hơn */
+        buddy->next = free_lists[i];
+        free_lists[i] = buddy;
+        
+        /* Giảm cấp độ của khối ban đầu xuống 1 bậc */
+        block->order = i + OS_MIN_ORDER;
+    }
+    
+    block->is_free = 0; /* Đánh dấu đã chiếm dụng */
+    __asm volatile ("cpsie i");
+    
+    /* Ẩn Header đi, chỉ trả về địa chỉ phần dữ liệu cho Task sử dụng */
+    return (void *)((uint8_t *)block + sizeof(os_block_t));
+}
+
+void os_free(void *ptr) {
+    if (!ptr) return;
+    
+    /* Lùi con trỏ lại 8 byte để đọc thông tin Header hệ thống */
+    os_block_t *block = (os_block_t *)((uint8_t *)ptr - sizeof(os_block_t));
+    
+    __asm volatile ("cpsid i");
+    block->is_free = 1;
+    
+    /* VÒNG LẶP GỘP RAM (MERGE BUDDY) */
+    while (block->order < OS_MAX_ORDER) {
+        /* Phép thuật Bitwise: Tìm địa chỉ của Buddy bằng phép XOR (Tuyệt đỉnh tốc độ) */
+        uint32_t offset = (uint8_t *)block - os_heap;
+        uint32_t buddy_offset = offset ^ (1UL << block->order);
+        os_block_t *buddy = (os_block_t *)(os_heap + buddy_offset);
+        
+        /* Nếu người bạn kia đang bị xài, hoặc đã bị chẻ nhỏ hơn -> Dừng gộp */
+        if (!buddy->is_free || buddy->order != block->order) {
+            break; 
+        }
+        
+        /* Tìm và rút Buddy ra khỏi danh sách rảnh rỗi */
+        uint8_t idx = block->order - OS_MIN_ORDER;
+        os_block_t **curr = &free_lists[idx];
+        while (*curr != NULL && *curr != buddy) {
+            curr = &(*curr)->next;
+        }
+        if (*curr == buddy) {
+            *curr = buddy->next;
+        }
+        
+        /* Gộp 2 khối lại: Khối gộp sẽ lấy địa chỉ của khối nằm trước trong RAM */
+        if ((uint8_t *)buddy < (uint8_t *)block) {
+            block = buddy;
+        }
+        
+        block->order++; /* Kích thước khối tăng gấp đôi */
+    }
+    
+    /* Nạp lại khối RAM (đã gộp to nhất có thể) vào danh sách rảnh rỗi */
+    uint8_t final_idx = block->order - OS_MIN_ORDER;
+    block->next = free_lists[final_idx];
+    free_lists[final_idx] = block;
+    
+    __asm volatile ("cpsie i");
 }

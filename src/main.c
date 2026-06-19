@@ -1,150 +1,73 @@
-// #include <stdint.h>
-// #include "os_kernel.h"
-
-// /* Các hàm UART tự viết */
-// extern void UART_Init(void);
-// extern void UART_Print(const char* str);
-// extern void UART_PrintNum(uint32_t num);
-
-// /* =========================================================================
-//  * KHAI BÁO TÀI NGUYÊN
-//  * ========================================================================= */
-// #define STACK_SIZE 256  
-
-// /* Chỉ cần cấp phát 2 mảng Stack tĩnh cho 2 Task */
-// uint32_t task1_stack[STACK_SIZE];
-// uint32_t task2_stack[STACK_SIZE];
-
-// /* Khai báo Mutex toàn cục để bảo vệ cổng UART (Đồng bộ hóa) */
-// os_mutex_t uart_mutex;
-
-// /* =========================================================================
-//  * MÃ NGUỒN CỦA 2 ỨNG DỤNG (TÍCH HỢP MUTEX)
-//  * ========================================================================= */
-// void Task1(void) {
-//     while (1) {
-//         /* Xin cấp quyền sử dụng Mutex trước khi dùng UART */
-//         os_mutex_take(&uart_mutex);
-        
-//         /* -------- VÙNG CRITICAL SECTION -------- */
-//         UART_Print("Hello World!\n");
-        
-//         /* Vòng lặp rỗng mô phỏng một tác vụ xử lý tốn thời gian.
-//          * Nhờ có Mutex, Task 2 sẽ bị khóa (Blocked) và không thể xen ngang vào đây. */
-//         for(volatile int i = 0; i < 10000; i++); 
-//         /* --------------------------------------- */
-        
-//         /* Xong việc, trả lại Mutex để Task khác có thể dùng */
-//         os_mutex_give(&uart_mutex);
-        
-//         /* Cho Task 1 ngủ 1000ms */
-//         os_delay(1000); 
-//     }
-// }
-
-// void Task2(void) {
-//     while (1) {
-//         /* Chờ lấy bằng được chìa khóa Mutex mới chạy tiếp */
-//         os_mutex_take(&uart_mutex);
-        
-//         /* -------- VÙNG CRITICAL SECTION -------- */
-//         UART_Print("Day la nhom 11\n");
-        
-//         for(volatile int i = 0; i < 10000; i++); 
-//         /* --------------------------------------- */
-        
-//         /* Xong việc, nhả Mutex ra */
-//         os_mutex_give(&uart_mutex);
-        
-//         /* Task 2 ngủ 1500ms */
-//         os_delay(1500); 
-//     }
-// }
-
-// /* =========================================================================
-//  * HÀM MAIN - HẠT NHÂN KHỞI ĐỘNG
-//  * ========================================================================= */
-// int main(void) {
-//     UART_Init();
-//     UART_Print("Hardware OK. Khoi tao kien truc RTOS cua Nhom 11...\n");
-
-//     /* 1. Khởi tạo dữ liệu hệ điều hành */
-//     os_init();
-    
-//     /* 2. Khởi tạo Mutex bảo vệ UART */
-//     os_mutex_init(&uart_mutex);
-
-//     /* 3. Đăng ký Task vào hệ thống */
-//     os_create_task(Task1, task1_stack, STACK_SIZE);
-//     os_create_task(Task2, task2_stack, STACK_SIZE);
-
-//     UART_Print("Bat dau chay Scheduler...\n");
-
-//     /* 4. Khởi động OS */
-//     os_start();
-
-//     /* 5. CPU sẽ chỉ lọt vào đây nếu tất cả các Task đều đang ngủ (IDLE) */
-//     while (1) {
-//         /* Chờ ngắt (Đưa phần cứng vào chế độ tiết kiệm điện) */
-//         __asm volatile("wfi"); 
-//     }
-    
-//     return 0; 
-// }
-
-
-//Ham main.c cho kich ban kiem thu
 #include <stdint.h>
+#include <stddef.h>  /* ĐÃ BỔ SUNG: Thư viện chứa từ khóa NULL để sửa lỗi */
 #include "os_kernel.h"
 
 extern void UART_Init(void);
 extern void UART_Print(const char* str);
 
-#define STACK_SIZE 256  
-
-/* Khai báo tĩnh 3 vùng nhớ riêng biệt cho 3 Task (Tiêu chí 5: Memory Manager) */
-uint32_t task1_stack[STACK_SIZE];
-uint32_t task2_stack[STACK_SIZE];
-uint32_t task3_stack[STACK_SIZE];
+#define STACK_SIZE 128 
+uint32_t stack_emerg[STACK_SIZE];
+uint32_t stack_mem[STACK_SIZE];
+uint32_t stack_wkA[STACK_SIZE];
+uint32_t stack_wkB[STACK_SIZE];
 
 os_mutex_t uart_mutex;
 
 /* =========================================================================
- * TASK 1 & TASK 2: CHỨNG MINH TIÊU CHÍ 1, 2 VÀ 3 (LẬP LỊCH, NGỮ CẢNH, SYSTICK)
+ * 1. TASK ĐẶC QUYỀN (MỨC 3) - CẢNH BÁO KHẨN CẤP
  * ========================================================================= */
-void Task1(void) {
+void Task_Emergency(void) {
     while (1) {
-        os_mutex_take(&uart_mutex);
-        UART_Print("[Task 1] Dang hoat dong: Test Bo lap lich & Mutex (OK)\n");
-        for(volatile int i = 0; i < 5000; i++); 
-        os_mutex_give(&uart_mutex);
+        os_delay(4000); /* Ngủ đông 4 giây */
         
-        os_delay(1000); 
+        /* Ngay khi tỉnh giấc ở giây thứ 4, do có mức ưu tiên cao nhất,
+         * OS sẽ ĐÁ VĂNG mọi Task khác đang chạy để Task này được cảnh báo */
+        os_mutex_take(&uart_mutex);
+        UART_Print("\n[!] ALARM: CANH BAO KHAN CAP! HE THONG BI XAM NHAP!\n\n");
+        os_mutex_give(&uart_mutex);
     }
 }
 
-void Task2(void) {
+/* =========================================================================
+ * 2. TASK TẦM TRUNG (MỨC 2) - XỬ LÝ BỘ NHỚ BUDDY SYSTEM
+ * ========================================================================= */
+void Task_Memory(void) {
     while (1) {
         os_mutex_take(&uart_mutex);
-        UART_Print("[Task 2] Dang hoat dong: Test Chuyen ngu canh & SysTick (OK)\n");
-        for(volatile int i = 0; i < 5000; i++); 
+        UART_Print("[Task Mem] Dang xu ly dong bo hoa va cap phat RAM...\n");
         os_mutex_give(&uart_mutex);
+        
+        /* Thử nghiệm thuật toán Buddy System (Xin 128 byte RAM) */
+        void* ptr = os_malloc(128);
+        if (ptr != NULL) {
+            /* Giả lập xử lý dữ liệu phức tạp */
+            for(volatile int i = 0; i < 2000; i++); 
+            os_free(ptr); /* Dùng xong trả ngay */
+        }
         
         os_delay(1500); 
     }
 }
 
 /* =========================================================================
- * TASK 3: CHỨNG MINH TIÊU CHÍ 4 (BAY LỖI HỦY TASK AN TOÀN)
+ * 3. TASK DÂN ĐEN (MỨC 1) - TÍNH TOÁN NỀN
  * ========================================================================= */
-void Task3_Suicide(void) {
-    os_mutex_take(&uart_mutex);
-    UART_Print("[Task 3] Co tinh return de test Bay loi...\n");
-    os_mutex_give(&uart_mutex);
-    
-    /* LỖI CỐ Ý: Không có vòng lặp while(1), Task sẽ chạy thẳng đến lệnh return.
-     * Nếu OS không có "Termination Trap", hệ thống sẽ bị Crash (HardFault) ngay tại đây. */
-    return; 
+void Task_WorkerA(void) {
+    while (1) {
+        os_mutex_take(&uart_mutex);
+        UART_Print("Hello World!\n");
+        os_mutex_give(&uart_mutex);
+        os_delay(1000); 
+    }
+}
+
+void Task_WorkerB(void) {
+    while (1) {
+        os_mutex_take(&uart_mutex);
+        UART_Print("He Dieu Hanh 2025.2\n");
+        os_mutex_give(&uart_mutex);
+        os_delay(1000); 
+    }
 }
 
 /* =========================================================================
@@ -152,20 +75,16 @@ void Task3_Suicide(void) {
  * ========================================================================= */
 int main(void) {
     UART_Init();
-    UART_Print("\n======================================================\n");
-    UART_Print("   KHOI DONG KICH BAN KIEM THU RTOS NANG CAO\n");
-    UART_Print("======================================================\n");
+    UART_Print("\nBat Dau\n");
 
     os_init();
     os_mutex_init(&uart_mutex);
 
-    /* Đăng ký 3 Task vào hệ thống */
-    os_create_task(Task1, task1_stack, STACK_SIZE);
-    os_create_task(Task2, task2_stack, STACK_SIZE);
-    os_create_task(Task3_Suicide, task3_stack, STACK_SIZE);
-
-    UART_Print("=> Da cap phat bo nho tinh thanh cong (Tieu chi 5)\n");
-    UART_Print("=> Bat dau kich hoat Bo lap lich...\n\n");
+    /* Tham số thứ 4 chính là ĐỘ ƯU TIÊN (Priority) */
+    os_create_task(Task_WorkerA, stack_wkA, STACK_SIZE, 1);
+    os_create_task(Task_WorkerB, stack_wkB, STACK_SIZE, 1);
+    os_create_task(Task_Memory,  stack_mem, STACK_SIZE, 2);
+    os_create_task(Task_Emergency, stack_emerg, STACK_SIZE, 3);
 
     os_start();
 

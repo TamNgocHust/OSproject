@@ -385,7 +385,7 @@ LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/.
 LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crtn.o
                 0x20002000                        _estack = 0x20002000
 
-.text           0x00000000      0x7e0
+.text           0x00000000      0xad8
                 0x00000000                        . = ALIGN (0x4)
  *(.isr_vector)
  .isr_vector    0x00000000       0x40 build/startup_stm32f100.o
@@ -403,99 +403,112 @@ LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/.
  .text.os_idle_task
                 0x000000e0        0x8 build/os_kernel.o
                 0x000000e0                os_idle_task
- .text.os_init  0x000000e8       0x74 build/os_kernel.o
+ .text.os_init  0x000000e8       0x78 build/os_kernel.o
                 0x000000e8                os_init
  .text.os_create_task
-                0x0000015c      0x164 build/os_kernel.o
-                0x0000015c                os_create_task
+                0x00000160      0x17c build/os_kernel.o
+                0x00000160                os_create_task
  .text.os_start
-                0x000002c0       0x50 build/os_kernel.o
-                0x000002c0                os_start
+                0x000002dc       0x50 build/os_kernel.o
+                0x000002dc                os_start
  .text.os_yield
-                0x00000310       0x18 build/os_kernel.o
-                0x00000310                os_yield
+                0x0000032c       0x18 build/os_kernel.o
+                0x0000032c                os_yield
  .text.os_delay
-                0x00000328       0x50 build/os_kernel.o
-                0x00000328                os_delay
+                0x00000344       0x50 build/os_kernel.o
+                0x00000344                os_delay
  .text.os_tick_handler
-                0x00000378       0xa4 build/os_kernel.o
-                0x00000378                os_tick_handler
+                0x00000394       0xa4 build/os_kernel.o
+                0x00000394                os_tick_handler
  .text.SysTick_Handler
-                0x0000041c        0xc build/os_kernel.o
-                0x0000041c                SysTick_Handler
+                0x00000438        0xc build/os_kernel.o
+                0x00000438                SysTick_Handler
  .text.os_schedule
-                0x00000428       0xdc build/os_kernel.o
-                0x00000428                os_schedule
+                0x00000444      0x15c build/os_kernel.o
+                0x00000444                os_schedule
  .text.PendSV_Handler
-                0x00000504       0x22 build/os_kernel.o
-                0x00000504                PendSV_Handler
+                0x000005a0       0x22 build/os_kernel.o
+                0x000005a0                PendSV_Handler
  .text.os_mutex_init
-                0x00000526       0x20 build/os_kernel.o
-                0x00000526                os_mutex_init
- *fill*         0x00000546        0x2 
+                0x000005c2       0x20 build/os_kernel.o
+                0x000005c2                os_mutex_init
+ *fill*         0x000005e2        0x2 
  .text.os_mutex_take
-                0x00000548       0x50 build/os_kernel.o
-                0x00000548                os_mutex_take
+                0x000005e4       0x50 build/os_kernel.o
+                0x000005e4                os_mutex_take
  .text.os_mutex_give
-                0x00000598       0x80 build/os_kernel.o
-                0x00000598                os_mutex_give
+                0x00000634       0x80 build/os_kernel.o
+                0x00000634                os_mutex_give
  .text.os_task_exit_handler
-                0x00000618       0x54 build/os_kernel.o
-                0x00000618                os_task_exit_handler
- .text.Task1    0x0000066c       0x40 build/main.o
-                0x0000066c                Task1
- .text.Task2    0x000006ac       0x40 build/main.o
-                0x000006ac                Task2
- .text.Task3_Suicide
-                0x000006ec       0x24 build/main.o
-                0x000006ec                Task3_Suicide
- .text.main     0x00000710       0x8c build/main.o
-                0x00000710                main
+                0x000006b4       0x54 build/os_kernel.o
+                0x000006b4                os_task_exit_handler
+ .text.os_buddy_init
+                0x00000708       0x50 build/os_kernel.o
+                0x00000708                os_buddy_init
+ .text.os_malloc
+                0x00000758      0x104 build/os_kernel.o
+                0x00000758                os_malloc
+ .text.os_free  0x0000085c       0xe8 build/os_kernel.o
+                0x0000085c                os_free
+ .text.Task_Emergency
+                0x00000944       0x2c build/main.o
+                0x00000944                Task_Emergency
+ .text.Task_Memory
+                0x00000970       0x54 build/main.o
+                0x00000970                Task_Memory
+ .text.Task_WorkerA
+                0x000009c4       0x2c build/main.o
+                0x000009c4                Task_WorkerA
+ .text.Task_WorkerB
+                0x000009f0       0x2c build/main.o
+                0x000009f0                Task_WorkerB
+ .text.main     0x00000a1c       0x78 build/main.o
+                0x00000a1c                main
  .text.Reset_Handler
-                0x0000079c       0x40 build/startup_stm32f100.o
-                0x0000079c                Reset_Handler
+                0x00000a94       0x40 build/startup_stm32f100.o
+                0x00000a94                Reset_Handler
  .text.Default_Handler
-                0x000007dc        0x4 build/startup_stm32f100.o
-                0x000007dc                Default_Handler
+                0x00000ad4        0x4 build/startup_stm32f100.o
+                0x00000ad4                Default_Handler
  *(.glue_7)
- .glue_7        0x000007e0        0x0 linker stubs
+ .glue_7        0x00000ad8        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x000007e0        0x0 linker stubs
-                0x000007e0                        . = ALIGN (0x4)
-                0x000007e0                        _etext = .
+ .glue_7t       0x00000ad8        0x0 linker stubs
+                0x00000ad8                        . = ALIGN (0x4)
+                0x00000ad8                        _etext = .
 
-.vfp11_veneer   0x000007e0        0x0
- .vfp11_veneer  0x000007e0        0x0 linker stubs
+.vfp11_veneer   0x00000ad8        0x0
+ .vfp11_veneer  0x00000ad8        0x0 linker stubs
 
-.v4_bx          0x000007e0        0x0
- .v4_bx         0x000007e0        0x0 linker stubs
+.v4_bx          0x00000ad8        0x0
+ .v4_bx         0x00000ad8        0x0 linker stubs
 
-.init           0x000007e0        0x4
- .init          0x000007e0        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crti.o
-                0x000007e0                _init
+.init           0x00000ad8        0x4
+ .init          0x00000ad8        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crti.o
+                0x00000ad8                _init
 
-.fini           0x000007e4        0x4
- .fini          0x000007e4        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crti.o
-                0x000007e4                _fini
+.fini           0x00000adc        0x4
+ .fini          0x00000adc        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crti.o
+                0x00000adc                _fini
 
-.iplt           0x000007e8        0x0
- .iplt          0x000007e8        0x0 build/stm32f100_uart.o
+.iplt           0x00000ae0        0x0
+ .iplt          0x00000ae0        0x0 build/stm32f100_uart.o
 
-.rodata         0x000007e8      0x2ac
-                0x000007e8                        . = ALIGN (0x4)
+.rodata         0x00000ae0      0x198
+                0x00000ae0                        . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x000007e8       0xf2 build/os_kernel.o
- *fill*         0x000008da        0x2 
- .rodata        0x000008dc      0x1b6 build/main.o
+ .rodata        0x00000ae0       0xf2 build/os_kernel.o
+ *fill*         0x00000bd2        0x2 
+ .rodata        0x00000bd4       0xa2 build/main.o
  *(.rodata*)
-                0x00000a94                        . = ALIGN (0x4)
- *fill*         0x00000a92        0x2 
-                0x00000a94                        _sidata = LOADADDR (.data)
+                0x00000c78                        . = ALIGN (0x4)
+ *fill*         0x00000c76        0x2 
+                0x00000c78                        _sidata = LOADADDR (.data)
 
-.rel.dyn        0x00000a94        0x0
- .rel.iplt      0x00000a94        0x0 build/stm32f100_uart.o
+.rel.dyn        0x00000c78        0x0
+ .rel.iplt      0x00000c78        0x0 build/stm32f100_uart.o
 
-.data           0x20000000        0x0 load address 0x00000a94
+.data           0x20000000        0x0 load address 0x00000c78
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -503,56 +516,64 @@ LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/.
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _edata = .
 
-.igot.plt       0x20000000        0x0 load address 0x00000a94
+.igot.plt       0x20000000        0x0 load address 0x00000c78
  .igot.plt      0x20000000        0x0 build/stm32f100_uart.o
 
-.bss            0x20000000      0xe44 load address 0x00000a94
+.bss            0x20000000     0x1a98 load address 0x00000c78
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sbss = .
                 0x20000000                        __bss_start__ = _sbss
  *(.bss)
  *(.bss*)
  .bss.os_task_table
-                0x20000000       0x30 build/os_kernel.o
+                0x20000000       0x60 build/os_kernel.o
                 0x20000000                os_task_table
  .bss.os_task_count
-                0x20000030        0x4 build/os_kernel.o
-                0x20000030                os_task_count
+                0x20000060        0x4 build/os_kernel.o
+                0x20000060                os_task_count
  .bss.os_current_task_idx
-                0x20000034        0x4 build/os_kernel.o
-                0x20000034                os_current_task_idx
+                0x20000064        0x4 build/os_kernel.o
+                0x20000064                os_current_task_idx
  .bss.os_system_tick
-                0x20000038        0x4 build/os_kernel.o
-                0x20000038                os_system_tick
+                0x20000068        0x4 build/os_kernel.o
+                0x20000068                os_system_tick
  .bss.os_idle_stack
-                0x2000003c      0x200 build/os_kernel.o
-                0x2000003c                os_idle_stack
- .bss.task1_stack
-                0x2000023c      0x400 build/main.o
-                0x2000023c                task1_stack
- .bss.task2_stack
-                0x2000063c      0x400 build/main.o
-                0x2000063c                task2_stack
- .bss.task3_stack
-                0x20000a3c      0x400 build/main.o
-                0x20000a3c                task3_stack
+                0x2000006c      0x200 build/os_kernel.o
+                0x2000006c                os_idle_stack
+ *fill*         0x2000026c        0x4 
+ .bss.os_heap   0x20000270     0x1000 build/os_kernel.o
+                0x20000270                os_heap
+ .bss.free_lists
+                0x20001270       0x20 build/os_kernel.o
+                0x20001270                free_lists
+ .bss.stack_emerg
+                0x20001290      0x200 build/main.o
+                0x20001290                stack_emerg
+ .bss.stack_mem
+                0x20001490      0x200 build/main.o
+                0x20001490                stack_mem
+ .bss.stack_wkA
+                0x20001690      0x200 build/main.o
+                0x20001690                stack_wkA
+ .bss.stack_wkB
+                0x20001890      0x200 build/main.o
+                0x20001890                stack_wkB
  .bss.uart_mutex
-                0x20000e3c        0x8 build/main.o
-                0x20000e3c                uart_mutex
+                0x20001a90        0x8 build/main.o
+                0x20001a90                uart_mutex
  *(COMMON)
-                0x20000e44                        . = ALIGN (0x4)
-                0x20000e44                        _ebss = .
-                0x20000e44                        __bss_end__ = _ebss
+                0x20001a98                        . = ALIGN (0x4)
+                0x20001a98                        _ebss = .
+                0x20001a98                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20000e44      0x404 load address 0x00000a94
-                0x20000e48                        . = ALIGN (0x8)
- *fill*         0x20000e44        0x4 
+                0x20001a98      0x400 load address 0x00000c78
+                0x20001a98                        . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
                 [!provide]                        PROVIDE (_end = .)
-                0x20001248                        . = (. + 0x400)
- *fill*         0x20000e48      0x400 
-                0x20001248                        . = ALIGN (0x8)
+                0x20001e98                        . = (. + 0x400)
+ *fill*         0x20001a98      0x400 
+                0x20001e98                        . = ALIGN (0x8)
 
 /DISCARD/
  *(.note*)
@@ -574,56 +595,56 @@ LOAD linker stubs
  .ARM.attributes
                 0x000000a4       0x21 build/startup_stm32f100.o
 
-.debug_info     0x00000000      0xa91
+.debug_info     0x00000000      0xd8f
  .debug_info    0x00000000      0x31d build/stm32f100_uart.o
- .debug_info    0x0000031d      0x4ba build/os_kernel.o
- .debug_info    0x000007d7      0x298 build/main.o
- .debug_info    0x00000a6f       0x22 build/startup_stm32f100.o
+ .debug_info    0x0000031d      0x751 build/os_kernel.o
+ .debug_info    0x00000a6e      0x2ff build/main.o
+ .debug_info    0x00000d6d       0x22 build/startup_stm32f100.o
 
-.debug_abbrev   0x00000000      0x473
+.debug_abbrev   0x00000000      0x584
  .debug_abbrev  0x00000000      0x11a build/stm32f100_uart.o
- .debug_abbrev  0x0000011a      0x1f4 build/os_kernel.o
- .debug_abbrev  0x0000030e      0x153 build/main.o
- .debug_abbrev  0x00000461       0x12 build/startup_stm32f100.o
+ .debug_abbrev  0x0000011a      0x301 build/os_kernel.o
+ .debug_abbrev  0x0000041b      0x157 build/main.o
+ .debug_abbrev  0x00000572       0x12 build/startup_stm32f100.o
 
-.debug_loc      0x00000000      0x608
+.debug_loc      0x00000000      0x73c
  .debug_loc     0x00000000      0x140 build/stm32f100_uart.o
- .debug_loc     0x00000140      0x400 build/os_kernel.o
- .debug_loc     0x00000540       0xc8 build/main.o
+ .debug_loc     0x00000140      0x514 build/os_kernel.o
+ .debug_loc     0x00000654       0xe8 build/main.o
 
-.debug_aranges  0x00000000      0x128
+.debug_aranges  0x00000000      0x148
  .debug_aranges
                 0x00000000       0x38 build/stm32f100_uart.o
  .debug_aranges
-                0x00000038       0x90 build/os_kernel.o
+                0x00000038       0xa8 build/os_kernel.o
  .debug_aranges
-                0x000000c8       0x38 build/main.o
+                0x000000e0       0x40 build/main.o
  .debug_aranges
-                0x00000100       0x28 build/startup_stm32f100.o
+                0x00000120       0x28 build/startup_stm32f100.o
 
-.debug_ranges   0x00000000       0xf0
+.debug_ranges   0x00000000      0x110
  .debug_ranges  0x00000000       0x28 build/stm32f100_uart.o
- .debug_ranges  0x00000028       0x80 build/os_kernel.o
- .debug_ranges  0x000000a8       0x28 build/main.o
- .debug_ranges  0x000000d0       0x20 build/startup_stm32f100.o
+ .debug_ranges  0x00000028       0x98 build/os_kernel.o
+ .debug_ranges  0x000000c0       0x30 build/main.o
+ .debug_ranges  0x000000f0       0x20 build/startup_stm32f100.o
 
-.debug_line     0x00000000      0x819
+.debug_line     0x00000000      0xa12
  .debug_line    0x00000000      0x1d8 build/stm32f100_uart.o
- .debug_line    0x000001d8      0x405 build/os_kernel.o
- .debug_line    0x000005dd      0x1c7 build/main.o
- .debug_line    0x000007a4       0x75 build/startup_stm32f100.o
+ .debug_line    0x000001d8      0x5e9 build/os_kernel.o
+ .debug_line    0x000007c1      0x1dc build/main.o
+ .debug_line    0x0000099d       0x75 build/startup_stm32f100.o
 
-.debug_str      0x00000000      0x434
- .debug_str     0x00000000      0x434 build/stm32f100_uart.o
+.debug_str      0x00000000      0x516
+ .debug_str     0x00000000      0x516 build/stm32f100_uart.o
                                 0x1f3 (size before relaxing)
- .debug_str     0x00000434        0x0 build/os_kernel.o
-                                0x35c (size before relaxing)
- .debug_str     0x00000434        0x0 build/main.o
-                                0x22d (size before relaxing)
- .debug_str     0x00000434        0x0 build/startup_stm32f100.o
+ .debug_str     0x00000516        0x0 build/os_kernel.o
+                                0x43e (size before relaxing)
+ .debug_str     0x00000516        0x0 build/main.o
+                                0x26c (size before relaxing)
+ .debug_str     0x00000516        0x0 build/startup_stm32f100.o
                                  0x3f (size before relaxing)
 
-.debug_frame    0x00000000      0x328
+.debug_frame    0x00000000      0x3b8
  .debug_frame   0x00000000       0xa0 build/stm32f100_uart.o
- .debug_frame   0x000000a0      0x200 build/os_kernel.o
- .debug_frame   0x000002a0       0x88 build/main.o
+ .debug_frame   0x000000a0      0x278 build/os_kernel.o
+ .debug_frame   0x00000318       0xa0 build/main.o
