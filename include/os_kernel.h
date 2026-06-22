@@ -11,7 +11,6 @@
 #define OS_MAX_TASKS 8
 
 /* Định nghĩa trạng thái hoạt động của Tác vụ */
-/* Định nghĩa trạng thái hoạt động của Tác vụ */
 typedef enum {
     OS_TASK_UNUSED = 0, 
     OS_TASK_READY,      

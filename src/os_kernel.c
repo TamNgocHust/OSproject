@@ -146,7 +146,7 @@ void SysTick_Handler(void) {
     os_tick_handler();
 }
 
-/* ĐÃ CẬP NHẬT: THUẬT TOÁN LẬP LỊCH DỰA TRÊN ĐỘ ƯU TIÊN */
+/*  THUẬT TOÁN LẬP LỊCH DỰA TRÊN ĐỘ ƯU TIÊN */
 uint32_t *os_schedule(uint32_t *current_sp) {
     /* 1. Lưu lại Stack của Task cũ */
     if (current_sp != NULL) {
@@ -185,9 +185,9 @@ uint32_t *os_schedule(uint32_t *current_sp) {
     return os_task_table[os_current_task_idx].sp;
 }
 
-/* =========================================================================
+/*
  * PHÉP THUẬT CHUYỂN NGỮ CẢNH (CONTEXT SWITCHING ASSEMBLY)
- * ========================================================================= */
+ */
 __attribute__((naked)) void PendSV_Handler(void) {
     __asm volatile (
         "cpsid i \n\t"                  /* Khóa ngắt hệ thống để bảo vệ ngữ cảnh */
@@ -208,9 +208,9 @@ __attribute__((naked)) void PendSV_Handler(void) {
     );
 }
 
-/* =========================================================================
+/* 
  * 4. CƠ CHẾ ĐỒNG BỘ HÓA TIẾN TRÌNH (MUTEX API)
- * ========================================================================= */
+ */
 void os_mutex_init(os_mutex_t *mutex) {
     mutex->is_locked = 0;
     mutex->owner_task_id = 0xFFFFFFFF; 

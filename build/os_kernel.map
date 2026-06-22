@@ -36,6 +36,12 @@ C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib
                               C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-findfp.o) (_fflush_r)
 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-sbrkr.o)
                               C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-mallocr.o) (_sbrk_r)
+C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o)
+                              build/main.o (__aeabi_uldivmod)
+C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
+                              C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o) (__udivmoddi4)
+C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_dvmd_tls.o)
+                              C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o) (__aeabi_ldiv0)
 
 Discarded input sections
 
@@ -104,14 +110,10 @@ Discarded input sections
  .text          0x00000000        0x0 build/stm32f100_uart.o
  .data          0x00000000        0x0 build/stm32f100_uart.o
  .bss           0x00000000        0x0 build/stm32f100_uart.o
- .text.UART_PrintNum
-                0x00000000       0x80 build/stm32f100_uart.o
  .comment       0x00000000       0x46 build/stm32f100_uart.o
  .text          0x00000000        0x0 build/os_kernel.o
  .data          0x00000000        0x0 build/os_kernel.o
  .bss           0x00000000        0x0 build/os_kernel.o
- .text.os_get_tick
-                0x00000000       0x14 build/os_kernel.o
  .comment       0x00000000       0x46 build/os_kernel.o
  .text          0x00000000        0x0 build/main.o
  .data          0x00000000        0x0 build/main.o
@@ -335,6 +337,15 @@ Discarded input sections
  .debug_frame   0x00000000       0x2c C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-sbrkr.o)
  .ARM.attributes
                 0x00000000       0x2d C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-sbrkr.o)
+ .data          0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o)
+ .bss           0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o)
+ .text          0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
+ .data          0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
+ .bss           0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
+ .ARM.extab.text.__udivmoddi4
+                0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
+ .data          0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_dvmd_tls.o)
+ .bss           0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_dvmd_tls.o)
  .text          0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crtend.o
  .data          0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crtend.o
  .bss           0x00000000        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crtend.o
@@ -385,130 +396,152 @@ LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/.
 LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crtn.o
                 0x20002000                        _estack = 0x20002000
 
-.text           0x00000000      0xad8
+.text           0x00000000     0x11bc
                 0x00000000                        . = ALIGN (0x4)
  *(.isr_vector)
  .isr_vector    0x00000000       0x40 build/startup_stm32f100.o
  *(.text)
+ .text          0x00000040       0x30 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o)
+                0x00000040                __aeabi_uldivmod
+ .text          0x00000070        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_dvmd_tls.o)
+                0x00000070                __aeabi_idiv0
+                0x00000070                __aeabi_ldiv0
  *(.text*)
  .text.UART_Init
-                0x00000040       0x50 build/stm32f100_uart.o
-                0x00000040                UART_Init
+                0x00000074       0x50 build/stm32f100_uart.o
+                0x00000074                UART_Init
  .text.UART_SendChar
-                0x00000090       0x24 build/stm32f100_uart.o
-                0x00000090                UART_SendChar
+                0x000000c4       0x24 build/stm32f100_uart.o
+                0x000000c4                UART_SendChar
  .text.UART_Print
-                0x000000b4       0x2c build/stm32f100_uart.o
-                0x000000b4                UART_Print
+                0x000000e8       0x2c build/stm32f100_uart.o
+                0x000000e8                UART_Print
+ .text.UART_PrintNum
+                0x00000114       0x80 build/stm32f100_uart.o
+                0x00000114                UART_PrintNum
  .text.os_idle_task
-                0x000000e0        0x8 build/os_kernel.o
-                0x000000e0                os_idle_task
- .text.os_init  0x000000e8       0x78 build/os_kernel.o
-                0x000000e8                os_init
+                0x00000194        0x8 build/os_kernel.o
+                0x00000194                os_idle_task
+ .text.os_init  0x0000019c       0x78 build/os_kernel.o
+                0x0000019c                os_init
  .text.os_create_task
-                0x00000160      0x17c build/os_kernel.o
-                0x00000160                os_create_task
+                0x00000214      0x17c build/os_kernel.o
+                0x00000214                os_create_task
  .text.os_start
-                0x000002dc       0x50 build/os_kernel.o
-                0x000002dc                os_start
+                0x00000390       0x50 build/os_kernel.o
+                0x00000390                os_start
  .text.os_yield
-                0x0000032c       0x18 build/os_kernel.o
-                0x0000032c                os_yield
+                0x000003e0       0x18 build/os_kernel.o
+                0x000003e0                os_yield
  .text.os_delay
-                0x00000344       0x50 build/os_kernel.o
-                0x00000344                os_delay
+                0x000003f8       0x50 build/os_kernel.o
+                0x000003f8                os_delay
  .text.os_tick_handler
-                0x00000394       0xa4 build/os_kernel.o
-                0x00000394                os_tick_handler
+                0x00000448       0xa4 build/os_kernel.o
+                0x00000448                os_tick_handler
+ .text.os_get_tick
+                0x000004ec       0x14 build/os_kernel.o
+                0x000004ec                os_get_tick
  .text.SysTick_Handler
-                0x00000438        0xc build/os_kernel.o
-                0x00000438                SysTick_Handler
+                0x00000500        0xc build/os_kernel.o
+                0x00000500                SysTick_Handler
  .text.os_schedule
-                0x00000444      0x15c build/os_kernel.o
-                0x00000444                os_schedule
+                0x0000050c      0x15c build/os_kernel.o
+                0x0000050c                os_schedule
  .text.PendSV_Handler
-                0x000005a0       0x22 build/os_kernel.o
-                0x000005a0                PendSV_Handler
+                0x00000668       0x22 build/os_kernel.o
+                0x00000668                PendSV_Handler
  .text.os_mutex_init
-                0x000005c2       0x20 build/os_kernel.o
-                0x000005c2                os_mutex_init
- *fill*         0x000005e2        0x2 
+                0x0000068a       0x20 build/os_kernel.o
+                0x0000068a                os_mutex_init
+ *fill*         0x000006aa        0x2 
  .text.os_mutex_take
-                0x000005e4       0x50 build/os_kernel.o
-                0x000005e4                os_mutex_take
+                0x000006ac       0x50 build/os_kernel.o
+                0x000006ac                os_mutex_take
  .text.os_mutex_give
-                0x00000634       0x80 build/os_kernel.o
-                0x00000634                os_mutex_give
+                0x000006fc       0x80 build/os_kernel.o
+                0x000006fc                os_mutex_give
  .text.os_task_exit_handler
-                0x000006b4       0x54 build/os_kernel.o
-                0x000006b4                os_task_exit_handler
+                0x0000077c       0x54 build/os_kernel.o
+                0x0000077c                os_task_exit_handler
  .text.os_buddy_init
-                0x00000708       0x50 build/os_kernel.o
-                0x00000708                os_buddy_init
+                0x000007d0       0x50 build/os_kernel.o
+                0x000007d0                os_buddy_init
  .text.os_malloc
-                0x00000758      0x104 build/os_kernel.o
-                0x00000758                os_malloc
- .text.os_free  0x0000085c       0xe8 build/os_kernel.o
-                0x0000085c                os_free
+                0x00000820      0x104 build/os_kernel.o
+                0x00000820                os_malloc
+ .text.os_free  0x00000924       0xe8 build/os_kernel.o
+                0x00000924                os_free
+ .text.UART_Print_With_Time
+                0x00000a0c      0x134 build/main.o
+                0x00000a0c                UART_Print_With_Time
  .text.Task_Emergency
-                0x00000944       0x2c build/main.o
-                0x00000944                Task_Emergency
+                0x00000b40       0x30 build/main.o
+                0x00000b40                Task_Emergency
  .text.Task_Memory
-                0x00000970       0x54 build/main.o
-                0x00000970                Task_Memory
+                0x00000b70       0x58 build/main.o
+                0x00000b70                Task_Memory
  .text.Task_WorkerA
-                0x000009c4       0x2c build/main.o
-                0x000009c4                Task_WorkerA
+                0x00000bc8       0x30 build/main.o
+                0x00000bc8                Task_WorkerA
  .text.Task_WorkerB
-                0x000009f0       0x2c build/main.o
-                0x000009f0                Task_WorkerB
- .text.main     0x00000a1c       0x78 build/main.o
-                0x00000a1c                main
+                0x00000bf8       0x30 build/main.o
+                0x00000bf8                Task_WorkerB
+ .text.main     0x00000c28      0x238 build/main.o
+                0x00000c28                main
  .text.Reset_Handler
-                0x00000a94       0x40 build/startup_stm32f100.o
-                0x00000a94                Reset_Handler
+                0x00000e60       0x40 build/startup_stm32f100.o
+                0x00000e60                Reset_Handler
  .text.Default_Handler
-                0x00000ad4        0x4 build/startup_stm32f100.o
-                0x00000ad4                Default_Handler
+                0x00000ea0        0x4 build/startup_stm32f100.o
+                0x00000ea0                Default_Handler
+ .text.__udivmoddi4
+                0x00000ea4      0x318 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
+                0x00000ea4                __udivmoddi4
  *(.glue_7)
- .glue_7        0x00000ad8        0x0 linker stubs
+ .glue_7        0x000011bc        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x00000ad8        0x0 linker stubs
-                0x00000ad8                        . = ALIGN (0x4)
-                0x00000ad8                        _etext = .
+ .glue_7t       0x000011bc        0x0 linker stubs
+                0x000011bc                        . = ALIGN (0x4)
+                0x000011bc                        _etext = .
 
-.vfp11_veneer   0x00000ad8        0x0
- .vfp11_veneer  0x00000ad8        0x0 linker stubs
+.vfp11_veneer   0x000011bc        0x0
+ .vfp11_veneer  0x000011bc        0x0 linker stubs
 
-.v4_bx          0x00000ad8        0x0
- .v4_bx         0x00000ad8        0x0 linker stubs
+.v4_bx          0x000011bc        0x0
+ .v4_bx         0x000011bc        0x0 linker stubs
 
-.init           0x00000ad8        0x4
- .init          0x00000ad8        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crti.o
-                0x00000ad8                _init
+.init           0x000011bc        0x4
+ .init          0x000011bc        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crti.o
+                0x000011bc                _init
 
-.fini           0x00000adc        0x4
- .fini          0x00000adc        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crti.o
-                0x00000adc                _fini
+.fini           0x000011c0        0x4
+ .fini          0x000011c0        0x4 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp/crti.o
+                0x000011c0                _fini
 
-.iplt           0x00000ae0        0x0
- .iplt          0x00000ae0        0x0 build/stm32f100_uart.o
+.iplt           0x000011c4        0x0
+ .iplt          0x000011c4        0x0 build/stm32f100_uart.o
 
-.rodata         0x00000ae0      0x198
-                0x00000ae0                        . = ALIGN (0x4)
+.rodata         0x000011c4      0x204
+                0x000011c4                        . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x00000ae0       0xf2 build/os_kernel.o
- *fill*         0x00000bd2        0x2 
- .rodata        0x00000bd4       0xa2 build/main.o
+ .rodata        0x000011c4       0xf2 build/os_kernel.o
+ *fill*         0x000012b6        0x2 
+ .rodata        0x000012b8      0x10d build/main.o
  *(.rodata*)
-                0x00000c78                        . = ALIGN (0x4)
- *fill*         0x00000c76        0x2 
-                0x00000c78                        _sidata = LOADADDR (.data)
+                0x000013c8                        . = ALIGN (0x4)
+ *fill*         0x000013c5        0x3 
+                0x000013d0                        _sidata = LOADADDR (.data)
 
-.rel.dyn        0x00000c78        0x0
- .rel.iplt      0x00000c78        0x0 build/stm32f100_uart.o
+.ARM.exidx.text.__udivmoddi4
+                0x000013c8        0x8
+ .ARM.exidx.text.__udivmoddi4
+                0x000013c8        0x8 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
 
-.data           0x20000000        0x0 load address 0x00000c78
+.rel.dyn        0x000013d0        0x0
+ .rel.iplt      0x000013d0        0x0 build/stm32f100_uart.o
+
+.data           0x20000000        0x0 load address 0x000013d0
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -516,10 +549,10 @@ LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/.
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _edata = .
 
-.igot.plt       0x20000000        0x0 load address 0x00000c78
+.igot.plt       0x20000000        0x0 load address 0x000013d0
  .igot.plt      0x20000000        0x0 build/stm32f100_uart.o
 
-.bss            0x20000000     0x1a98 load address 0x00000c78
+.bss            0x20000000     0x18a0 load address 0x000013d0
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sbss = .
                 0x20000000                        __bss_start__ = _sbss
@@ -553,27 +586,29 @@ LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/.
                 0x20001490      0x200 build/main.o
                 0x20001490                stack_mem
  .bss.stack_wkA
-                0x20001690      0x200 build/main.o
+                0x20001690      0x100 build/main.o
                 0x20001690                stack_wkA
  .bss.stack_wkB
-                0x20001890      0x200 build/main.o
-                0x20001890                stack_wkB
+                0x20001790      0x100 build/main.o
+                0x20001790                stack_wkB
  .bss.uart_mutex
-                0x20001a90        0x8 build/main.o
-                0x20001a90                uart_mutex
+                0x20001890        0x8 build/main.o
+                0x20001890                uart_mutex
+ .bss.start_ms  0x20001898        0x8 build/main.o
+                0x20001898                start_ms
  *(COMMON)
-                0x20001a98                        . = ALIGN (0x4)
-                0x20001a98                        _ebss = .
-                0x20001a98                        __bss_end__ = _ebss
+                0x200018a0                        . = ALIGN (0x4)
+                0x200018a0                        _ebss = .
+                0x200018a0                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20001a98      0x400 load address 0x00000c78
-                0x20001a98                        . = ALIGN (0x8)
+                0x200018a0      0x400 load address 0x000013d0
+                0x200018a0                        . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
                 [!provide]                        PROVIDE (_end = .)
-                0x20001e98                        . = (. + 0x400)
- *fill*         0x20001a98      0x400 
-                0x20001e98                        . = ALIGN (0x8)
+                0x20001ca0                        . = (. + 0x400)
+ *fill*         0x200018a0      0x400 
+                0x20001ca0                        . = ALIGN (0x8)
 
 /DISCARD/
  *(.note*)
@@ -594,57 +629,74 @@ LOAD linker stubs
                 0x00000077       0x2d build/main.o
  .ARM.attributes
                 0x000000a4       0x21 build/startup_stm32f100.o
+ .ARM.attributes
+                0x000000c5       0x1d C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o)
+ .ARM.attributes
+                0x000000e2       0x2d C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
+ .ARM.attributes
+                0x0000010f       0x1d C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_dvmd_tls.o)
 
-.debug_info     0x00000000      0xd8f
+.debug_info     0x00000000      0xef6
  .debug_info    0x00000000      0x31d build/stm32f100_uart.o
  .debug_info    0x0000031d      0x751 build/os_kernel.o
- .debug_info    0x00000a6e      0x2ff build/main.o
- .debug_info    0x00000d6d       0x22 build/startup_stm32f100.o
+ .debug_info    0x00000a6e      0x466 build/main.o
+ .debug_info    0x00000ed4       0x22 build/startup_stm32f100.o
 
-.debug_abbrev   0x00000000      0x584
+.debug_abbrev   0x00000000      0x5e8
  .debug_abbrev  0x00000000      0x11a build/stm32f100_uart.o
  .debug_abbrev  0x0000011a      0x301 build/os_kernel.o
- .debug_abbrev  0x0000041b      0x157 build/main.o
- .debug_abbrev  0x00000572       0x12 build/startup_stm32f100.o
+ .debug_abbrev  0x0000041b      0x1bb build/main.o
+ .debug_abbrev  0x000005d6       0x12 build/startup_stm32f100.o
 
-.debug_loc      0x00000000      0x73c
+.debug_loc      0x00000000      0x79c
  .debug_loc     0x00000000      0x140 build/stm32f100_uart.o
  .debug_loc     0x00000140      0x514 build/os_kernel.o
- .debug_loc     0x00000654       0xe8 build/main.o
+ .debug_loc     0x00000654      0x148 build/main.o
 
-.debug_aranges  0x00000000      0x148
+.debug_aranges  0x00000000      0x150
  .debug_aranges
                 0x00000000       0x38 build/stm32f100_uart.o
  .debug_aranges
                 0x00000038       0xa8 build/os_kernel.o
  .debug_aranges
-                0x000000e0       0x40 build/main.o
+                0x000000e0       0x48 build/main.o
  .debug_aranges
-                0x00000120       0x28 build/startup_stm32f100.o
+                0x00000128       0x28 build/startup_stm32f100.o
 
-.debug_ranges   0x00000000      0x110
+.debug_ranges   0x00000000      0x118
  .debug_ranges  0x00000000       0x28 build/stm32f100_uart.o
  .debug_ranges  0x00000028       0x98 build/os_kernel.o
- .debug_ranges  0x000000c0       0x30 build/main.o
- .debug_ranges  0x000000f0       0x20 build/startup_stm32f100.o
+ .debug_ranges  0x000000c0       0x38 build/main.o
+ .debug_ranges  0x000000f8       0x20 build/startup_stm32f100.o
 
-.debug_line     0x00000000      0xa12
+.debug_line     0x00000000      0xad4
  .debug_line    0x00000000      0x1d8 build/stm32f100_uart.o
  .debug_line    0x000001d8      0x5e9 build/os_kernel.o
- .debug_line    0x000007c1      0x1dc build/main.o
- .debug_line    0x0000099d       0x75 build/startup_stm32f100.o
+ .debug_line    0x000007c1      0x29e build/main.o
+ .debug_line    0x00000a5f       0x75 build/startup_stm32f100.o
 
-.debug_str      0x00000000      0x516
- .debug_str     0x00000000      0x516 build/stm32f100_uart.o
+.debug_str      0x00000000      0x5a5
+ .debug_str     0x00000000      0x5a5 build/stm32f100_uart.o
                                 0x1f3 (size before relaxing)
- .debug_str     0x00000516        0x0 build/os_kernel.o
+ .debug_str     0x000005a5        0x0 build/os_kernel.o
                                 0x43e (size before relaxing)
- .debug_str     0x00000516        0x0 build/main.o
-                                0x26c (size before relaxing)
- .debug_str     0x00000516        0x0 build/startup_stm32f100.o
+ .debug_str     0x000005a5        0x0 build/main.o
+                                0x328 (size before relaxing)
+ .debug_str     0x000005a5        0x0 build/startup_stm32f100.o
                                  0x3f (size before relaxing)
 
-.debug_frame    0x00000000      0x3b8
+.debug_frame    0x00000000      0x454
  .debug_frame   0x00000000       0xa0 build/stm32f100_uart.o
  .debug_frame   0x000000a0      0x278 build/os_kernel.o
- .debug_frame   0x00000318       0xa0 build/main.o
+ .debug_frame   0x00000318       0xdc build/main.o
+ .debug_frame   0x000003f4       0x2c C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x00000420       0x34 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_udivmoddi4.o)
+
+.debug_line_str
+                0x00000000       0xd1
+ .debug_line_str
+                0x00000000       0xd1 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_aeabi_uldivmod.o)
+                                 0xc5 (size before relaxing)
+ .debug_line_str
+                0x000000d1        0x0 C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7-m/nofp\libgcc.a(_dvmd_tls.o)
+                                 0xc9 (size before relaxing)
